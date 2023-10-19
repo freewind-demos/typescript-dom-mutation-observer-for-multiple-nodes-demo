@@ -1,7 +1,7 @@
-TypeScript DOM MutationObserver with Nested IFrames Demo
+TypeScript DOM MutationObserver for Multiple Nodes Demo
 ========================================================
 
-对于Nested iframes，可以在每个iframe的document中设置 MutationObserver
+一个observer可以同时监听多个nodes的修改
 
 ```
 npm i

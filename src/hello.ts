@@ -1,43 +1,22 @@
-function enhanceButton() {
-  const nested1 = document.querySelector('iframe')!;
-  const nested2 = nested1.contentDocument!.querySelector('iframe')!;
-  const button = nested2.contentDocument!.querySelector('#button')!
+const button = document.getElementById('button')!;
+const div1 = document.getElementById('div1')!;
+const div2 = document.getElementById('div2')!;
 
-  button.addEventListener('click', () => {
-    button.textContent += '!';
-    // const div = nested2.contentDocument?.createElement('div')!;
-    // div.textContent = 'new created';
-    // nested2.contentDocument!.body.appendChild(div);
-  })
-}
+button.addEventListener('click', () => {
+    div1.innerText += '#';
+    div2.innerText += '%';
+})
 
-function setupMutationObserver() {
-  function setupPage(win: Window) {
-    console.log('### setupPage', win);
-    const targetNode = win.document.querySelector('body')!;
+const observerOptions = {
+    childList: true, // direct children
+    attributes: true,
+    subtree: true // descendants. Only available when childList is true
+};
 
-    const observerOptions = {
-      childList: true, // direct children
-      attributes: true,
-      subtree: true // descendants. Only available when childList is true
-    };
+const observer = new MutationObserver((mutations, observer) => {
+    console.log("### mutations", mutations)
+});
 
-    const observer = new MutationObserver(function () {
-      console.log('DOM is changed on ', win);
-    });
+observer.observe(div1, observerOptions);
+observer.observe(div2, observerOptions);
 
-    observer.observe(targetNode, observerOptions);
-
-    const iframes = Array.from(win.document.querySelectorAll('iframe'));
-    iframes.forEach((iframe) => {
-      setupPage(iframe.contentWindow!);
-    })
-  }
-
-  setupPage(window);
-}
-
-setTimeout(() => {
-  enhanceButton();
-  setupMutationObserver();
-}, 1000);
